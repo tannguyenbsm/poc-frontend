@@ -1,0 +1,25 @@
+version: 0.2
+phases:
+  install:
+    #If you use the Ubuntu standard image 2.0 or later, you must specify runtime-versions.
+    #If you specify runtime-versions and use an image other than Ubuntu standard image 2.0, the build fails.
+    runtime-versions:
+      nodejs: 18
+  pre_build:
+    commands:
+      - echo Install Yarn
+      - npm install -g yarn
+      - echo Install dependencies
+      - yarn install --frozen-lockfile
+  build:
+    commands:
+      - echo Build started on 'date'
+      - yarn build
+  post_build:
+    commands:
+      - aws s3 sync ./out s3://$S3_BUCKET
+      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+artifacts:
+  files:
+    - "out/*"
+    - "out/**/*"
