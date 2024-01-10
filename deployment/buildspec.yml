@@ -13,7 +13,7 @@ phases:
       - yarn install --frozen-lockfile
   build:
     commands:
-      - apk add gettext
+      - apt-get install -y gettext
       - envsubst < .env.deployment > .env
       - ls
       - cat .env
