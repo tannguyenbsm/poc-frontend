@@ -7,13 +7,15 @@ phases:
       nodejs: 18
   pre_build:
     commands:
+      - echo Install package
+      - apt-get update
+      - apt-get install -y gettext
       - echo Install Yarn
       - npm install -g yarn
       - echo Install dependencies
       - yarn install --frozen-lockfile
   build:
     commands:
-      - apt-get install -y gettext
       - envsubst < .env.deployment > .env
       - ls
       - cat .env
