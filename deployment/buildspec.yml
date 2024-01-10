@@ -4,12 +4,11 @@ phases:
     #If you use the Ubuntu standard image 2.0 or later, you must specify runtime-versions.
     #If you specify runtime-versions and use an image other than Ubuntu standard image 2.0, the build fails.
     runtime-versions:
-      nodejs: 18
+      nodejs: 18-alpine
   pre_build:
     commands:
       - echo Install package
-      - apt-get update
-      - apt-get install -y gettext
+      - apk add gettext
       - echo Install Yarn
       - npm install -g yarn
       - echo Install dependencies
