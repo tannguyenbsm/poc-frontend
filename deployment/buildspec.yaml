@@ -13,12 +13,15 @@ phases:
       - yarn install --frozen-lockfile
   build:
     commands:
+      - apk add gettext
+      - envsubst < .env.deployment > .env
+      - ls
+      - cat .env
       - yarn build
   post_build:
     commands:
-      - echo "build success"
-      # - aws s3 sync ./out s3://$S3_BUCKET
-      # - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+      - aws s3 sync ./out s3://$S3_BUCKET
+      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
 artifacts:
   files:
     - "out/*"
